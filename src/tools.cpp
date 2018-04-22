@@ -9,6 +9,7 @@ Tools::Tools() {}
 
 Tools::~Tools() {}
 
+// Most of this is from the Quizzes
 VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
                        const vector<VectorXd> &ground_truth){
 
@@ -43,6 +44,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   return rmse;
 }
 
+// Most of this is from the Quizzes
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   MatrixXd Hj(3, 4);
   Hj.fill(0.0);

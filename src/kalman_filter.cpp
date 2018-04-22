@@ -49,6 +49,7 @@ void KalmanFilter::Update(const VectorXd &z) {
   P_ = (I - K * H_) * P_;
 }
 
+// This is for Radar
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
      TODO:
