@@ -1,3 +1,10 @@
+// References:
+// 1. Project walkthrough and Q&A
+// 2. Quizzes and Lessons
+// 3. EKF notes
+// 4. Slack Channel
+// 5. Mentor support
+
 #include <uWS/uWS.h>
 #include <iostream>
 #include "json.hpp"
