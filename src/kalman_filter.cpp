@@ -72,6 +72,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   VectorXd y = z - z_pred;
 
   // Normalize the angle, y(1)
+  // This helps achieve desired accuracy
   double width = 2 * M_PI;
   double offsetValue = y(1) + M_PI;
   y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
