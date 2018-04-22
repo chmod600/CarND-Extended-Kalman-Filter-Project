@@ -24,15 +24,16 @@ FusionEKF::FusionEKF() {
 
   //measurement covariance matrix - laser
   R_laser_ << 0.0225, 0,
-        0, 0.0225;
+    0, 0.0225;
 
   //measurement covariance matrix - radar
   R_radar_ << 0.09, 0, 0,
-        0, 0.0009, 0,
-        0, 0, 0.09;
+    0, 0.0009, 0,
+    0, 0, 0.09;
 
+  // Section 10 lesson 5
   H_laser_ << 1, 0, 0, 0,
-        0, 1, 0, 0;
+    0, 1, 0, 0;
 
   /**
   TODO:
@@ -48,13 +49,13 @@ FusionEKF::FusionEKF() {
 
   //the initial transition matrix F_
   ekf_.F_ = MatrixXd(4, 4);
-  ekf_.F_ << 1, 0, 1, 0,
-    0, 1, 0, 1,
+  ekf_.F_ << 1, 0, 0, 0,
+    0, 1, 0, 0,
     0, 0, 1, 0,
     0, 0, 0, 1;
 
-  noise_ax = 3;
-  noise_ay = 9; // noise_ax * noise_ax
+  noise_ax = 9;
+  noise_ay = 9;
 }
 
 /**
@@ -151,6 +152,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // Radar updates
   } else {
     // Laser updates
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
   }
 
   // print the output
