@@ -20,7 +20,6 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   Q_ = Q_in;
 }
 
-
 // Same function for laser & radar
 void KalmanFilter::Predict() {
   /**
@@ -32,6 +31,7 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
+// This is for Lidar
 void KalmanFilter::Update(const VectorXd &z) {
   /**
      TODO:
@@ -42,10 +42,10 @@ void KalmanFilter::Update(const VectorXd &z) {
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
   MatrixXd K =  P_ * Ht * Si;
-
-  //new state
-  x_ = x_ + (K * y);
   MatrixXd I = MatrixXd::Identity(x_.size(), x_.size());
+
+  // New state
+  x_ = x_ + (K * y);
   P_ = (I - K * H_) * P_;
 }
 
@@ -69,9 +69,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
   VectorXd y = z - z_pred;
 
-  // normalize angle
-  double width = 2 * M_PI;   //
-  double offsetValue = y(1) + M_PI;   // value relative to 0
+  // Normalize the angle, y(1)
+  double width = 2 * M_PI;
+  double offsetValue = y(1) + M_PI;
   y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
 
   MatrixXd Ht = H_.transpose();
@@ -80,7 +80,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   MatrixXd K =  P_ * Ht * Si;
   MatrixXd I = MatrixXd::Identity(x_.size(), x_.size());
 
-  //new state
+  // New state
   x_ = x_ + (K * y);
   P_ = (I - K * H_) * P_;
 }
