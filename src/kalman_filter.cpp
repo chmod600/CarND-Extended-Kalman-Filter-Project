@@ -18,9 +18,6 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   H_ = H_in;
   R_ = R_in;
   Q_ = Q_in;
-
-  VectorXd u = VectorXd(2);
-  u << 0, 0;
 }
 
 
@@ -66,9 +63,16 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   float rho = sqrt(px * px + py * py);
   float theta = atan2(py, px);
   float rho_dot = (px * vx + py * vy) / rho;
+
   VectorXd z_pred = VectorXd(3);
   z_pred << rho, theta, rho_dot;
+
   VectorXd y = z - z_pred;
+
+  // normalize angle
+  double width = 2 * M_PI;   //
+  double offsetValue = y(1) + M_PI;   // value relative to 0
+  y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
 
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
